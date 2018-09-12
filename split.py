@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import sys
 import signal
 import subprocess
@@ -117,7 +116,7 @@ ap.add_argument(nargs=1, dest='infile', type=str, default=None,
 ap.add_argument('-p', '--prefix', default=None, nargs=1, dest='prefix', type=str, required=False,
                   help='Prefix for output files')
 ap.add_argument('-b', '--begin', default=0, nargs=1, dest='pause', type=int, required=False,
-                  help='Begin with a pause for each slice in seconds')
+                  help='Begin with a pause for each slice in seconds(not implemented)')
 ap.add_argument('-s', '--slice', default=30, nargs=1, dest='slice', type=int, required=False,
                   help='Size of each slice in minutes')
 ap.add_argument('-c', '--chapters', default=False, dest='chapters', action='store_true', required=False,
@@ -145,7 +144,22 @@ if args.dump:
     print(repr(chap))
   exit(0)
 
-
 # Some handy commands
 # ffmpeg -i input.ext -c:a copy -ss start_time -t end_time output-ext
+# try using -to instead of -t
+# ffmpeg -i in.opus -ss 00:00:30.0 -t 00:03:00 -c copy out.opus
+# ffmpeg -loglevel fatal -i BK_ADBL_022135.mp3 -ss 673.657 -to 1197.825 -c:a copy chap3.mp3
 
+if args.chapters and len(info["chapters"]) > 0: # Split by chapters
+  cnt = 0
+  for chap in info["chapters"]:
+    cnt += 1
+    if args.prefix == None:
+      outfile = infile.rsplit(".", 1)[0] + "-" + str(cnt).zfill(3) + ".mp3"
+    else:
+      outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
+    # TODO: Add title metadata for each slice
+    ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + " -c:a copy " + outfile)
+
+else: # Split by slice size
+  pass
