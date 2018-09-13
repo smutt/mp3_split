@@ -118,12 +118,20 @@ ap.add_argument('-p', '--prefix', default=None, nargs=1, dest='prefix', type=str
 ap.add_argument('-b', '--begin', default=0, nargs=1, dest='pause', type=int, required=False,
                   help='Begin with a pause for each slice in seconds(not implemented)')
 ap.add_argument('-s', '--slice', default=30, nargs=1, dest='slice', type=int, required=False,
-                  help='Size of each slice in minutes')
+                  help='Size of each slice in minutes(not implemented)')
 ap.add_argument('-c', '--chapters', default=False, dest='chapters', action='store_true', required=False,
                   help='Use chapter breaks if present. Overrides -s if present')
 ap.add_argument('-d', '--dump', default=False, dest='dump', action='store_true', required=False,
                   help='Dump info on mp3 and exit.')
 args = ap.parse_args()
+
+if args.pause:
+  print("ERROR: -b --begin not yet implemented")
+  exit(1)
+
+if args.slice:
+  print("ERROR: -s --slice not yet implemented")
+  exit(1)
 
 infile = args.infile[0]
 
@@ -158,7 +166,7 @@ if args.chapters and len(info["chapters"]) > 0: # Split by chapters
     else:
       outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
 
-    # This automatically copies all metadata information into each chapter
+    # This also copies all metadata information into each chapter
     ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + " -c:a copy " + outfile)
 
 else: # Split by slice size
