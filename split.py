@@ -146,9 +146,8 @@ if args.dump:
 
 # Some handy commands
 # ffmpeg -i input.ext -c:a copy -ss start_time -t end_time output-ext
-# try using -to instead of -t
 # ffmpeg -i in.opus -ss 00:00:30.0 -t 00:03:00 -c copy out.opus
-# ffmpeg -loglevel fatal -i BK_ADBL_022135.mp3 -ss 673.657 -to 1197.825 -c:a copy chap3.mp3
+# ffmpeg -loglevel fatal -i test.mp3 -ss 623.907 -to 1187.843 -c:a copy chap3.mp3
 
 if args.chapters and len(info["chapters"]) > 0: # Split by chapters
   cnt = 0
@@ -158,7 +157,8 @@ if args.chapters and len(info["chapters"]) > 0: # Split by chapters
       outfile = infile.rsplit(".", 1)[0] + "-" + str(cnt).zfill(3) + ".mp3"
     else:
       outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
-    # TODO: Add title metadata for each slice
+
+    # This automatically copies all metadata information into each chapter
     ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + " -c:a copy " + outfile)
 
 else: # Split by slice size
