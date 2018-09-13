@@ -93,7 +93,6 @@ def ff(cmd):
 # Kill ourselves
 def euthanize(signal, frame):
   print(str(signal) + " exiting")
-
   sys.exit(0)
 
 
