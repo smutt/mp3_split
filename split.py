@@ -94,9 +94,6 @@ def ff(cmd):
 def euthanize(signal, frame):
   print(str(signal) + " exiting")
 
-  # Close all open files
-  # TODO
-  
   sys.exit(0)
 
 
