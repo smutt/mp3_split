@@ -113,7 +113,7 @@ ap.add_argument('-p', '--prefix', default=None, nargs=1, dest='prefix', type=str
                   help='Prefix for output files')
 ap.add_argument('-b', '--begin', default=0, nargs=1, dest='pause', type=int, required=False,
                   help='Begin with a pause for each slice in seconds(not implemented)')
-ap.add_argument('-s', '--slice', default=30, nargs=1, dest='slice', type=int, required=False,
+ap.add_argument('-s', '--slice', default=None, nargs=1, dest='slice', type=int, required=False,
                   help='Size of each slice in minutes(not implemented)')
 ap.add_argument('-c', '--chapters', default=False, dest='chapters', action='store_true', required=False,
                   help='Use chapter breaks if present. Overrides -s if present')
