@@ -162,8 +162,9 @@ if args.chapters and len(info["chapters"]) > 0: # Split by chapters
     else:
       outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
 
-    # This also copies all metadata information into each chapter
-    ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + " -c:a copy " + outfile)
+    # This also copies all metadata information into each chapter and sets track number
+    ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + \
+         " -metadata track=" + str(cnt).zfill(3) + " -c:a copy " + outfile)
 
 else: # Split by slice size
   pass
