@@ -119,6 +119,8 @@ ap.add_argument('-c', '--chapters', default=False, dest='chapters', action='stor
                   help='Use chapter breaks if present. Overrides -s if present')
 ap.add_argument('-d', '--dump', default=False, dest='dump', action='store_true', required=False,
                   help='Dump info on mp3 and exit.')
+ap.add_argument('-v', '--verbose', default=False, dest='verbose', action='store_true', required=False,
+                  help='Verbose output during processing.')
 args = ap.parse_args()
 
 if args.pause:
@@ -154,6 +156,8 @@ if args.dump:
 # ffmpeg -loglevel fatal -i test.mp3 -ss 623.907 -to 1187.843 -c:a copy chap3.mp3
 
 if args.chapters and len(info["chapters"]) > 0: # Split by chapters
+  if args.verbose:
+    print("Splitting by " + str(len(info["chapters"])) + " chapters")
   cnt = 0
   for chap in info["chapters"]:
     cnt += 1
@@ -162,9 +166,15 @@ if args.chapters and len(info["chapters"]) > 0: # Split by chapters
     else:
       outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
 
+    if args.verbose:
+      print("Extracting chapter " + str(cnt) + " to " + outfile + " at " + str(chap.start))
     # This also copies all metadata information into each chapter and sets track number
     ff("-loglevel fatal -i " + infile + " -ss " + str(chap.start) + " -to " + str(chap.end) + \
          " -metadata track=" + str(cnt).zfill(3) + " -c:a copy " + outfile)
 
 else: # Split by slice size
   pass
+
+
+if args.verbose:
+  print("Finished\a\a\a\a")
