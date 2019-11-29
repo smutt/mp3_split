@@ -164,7 +164,7 @@ if args.chapters and len(info["chapters"]) > 0: # Split by chapters
     if args.prefix == None:
       outfile = infile.rsplit(".", 1)[0] + "-" + str(cnt).zfill(3) + ".mp3"
     else:
-      outfile = args.prefix + "-" + str(cnt).zfill(3) + ".mp3"
+      outfile = args.prefix[0] + "-" + str(cnt).zfill(3) + ".mp3"
 
     if args.verbose:
       print("Extracting chapter " + str(cnt) + " to " + outfile + " at " + str(chap.start))
